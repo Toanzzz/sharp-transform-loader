@@ -27,8 +27,7 @@ const findInObjects = (prop, ...objects) => {
   for (const obj of objects) {
     if (obj.hasOwnProperty(prop)) return obj[prop];
   }
-
-  return undefined;
+  return void 0;
 };
 
 // building functions
@@ -60,16 +59,21 @@ function createResizeRequest(size, existingLoaders, resource) {
   return `require(${JSON.stringify(remainingRequest)})`;
 }
 
-function createPlaceholderRequest(resource) {
-  const loaderOptions = url.format({
-    pathname: path.resolve(__dirname, './placeholder-loader')
-  });
-
+function buildPlaceholder(placeholder, resource) {
+  let loaderOptions;
+  if (placeholder === 'trace') {
+    loaderOptions = url.format({
+      pathname: path.resolve(__dirname, './trace-svg-loader')
+    });
+  } else {
+    loaderOptions = url.format({
+      pathname: path.resolve(__dirname, './placeholder-loader')
+    });
+  }
   const remainingRequest = rebuildRemainingRequest(
     [`${loaderOptions}`],
     resource
   );
-
   return `require(${JSON.stringify(remainingRequest)})`;
 }
 
@@ -196,7 +200,7 @@ sharpTransformLoader.pitch = function sharpTransformLoaderPitch(
     rebuildRemainingRequest(loaders, resource)
   )})`},`;
   const placeholderScript = placeholder
-    ? `placeholder: ${createPlaceholderRequest(resource)}, `
+    ? `placeholder: ${buildPlaceholder(placeholder, resource)}, `
     : '';
 
   return `module.exports = {

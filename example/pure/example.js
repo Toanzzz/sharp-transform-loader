@@ -1,11 +1,11 @@
 import whale from './whale.jpeg?sizes=400w+400w.webp+800w+800w.webp+1x+2x&placeholder&webp';
 // alternative syntax
-import paris from './paris.jpeg?sizes[]=400w&sizes[]=800w&placeholder';
-import DOG from '../../test/assets/dog.jpg?sizes=1x+1x.webp+2x+2x.webp';
-import WEBPACKICON from '../../test/assets/webpack-icon.svg?sizes=1x.webp+2x.webp&placeholder';
-console.log('TCL: WEBPACKICON', WEBPACKICON);
+import paris from './paris.jpeg?sizes[]=400w&sizes[]=800w&placeholder=trace';
+import WEBPACKICON from '../../test/assets/webpack-icon.svg?placeholder';
+import Icon from './image.svg?placeholder=trace';
+console.log('TCL: Icon', Icon);
 
-console.log('TCL: DOG', DOG);
+console.log('TCL: WEBPACKICON', WEBPACKICON);
 
 console.log('IMAGE', whale);
 
@@ -30,7 +30,9 @@ function addImage(src, srcSet) {
   }
   document.body.appendChild(image);
 }
-
+addImage(paris.placeholder.url);
+addImage(Icon.image);
+addImage(Icon.placeholder.url);
 addImage(WEBPACKICON.placeholder.url);
 addImage(WEBPACKICON.image);
 Object.keys(WEBPACKICON.sources).forEach(srcKey =>
